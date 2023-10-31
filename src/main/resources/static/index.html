@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Address Search</title>
+</head>
+<body>
+<h1>Address Search</h1>
+<input type="text" id="addressInput" placeholder="Enter an address">
+<button onclick="searchAddress()">Search</button>
+<div id="result"></div>
+
+<script>
+    function searchAddress() {
+        var keyword = document.getElementById("addressInput").value;
+
+        fetch(`http://localhost:8080/search/address/${encodeURIComponent(keyword)}`)
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("result").innerText = data;
+            })
+            .catch(error => console.error('Error:', error));
+    }
+</script>
+</body>
+</html>

@@ -3,11 +3,16 @@ import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
 import org.openqa.selenium.chrome.ChromeDriver
 import org.openqa.selenium.chrome.ChromeOptions
+import org.springframework.stereotype.Component
 
-class Main {
+@Component
+class TerrorlessCrawling {
     private val driver: WebDriver
     private var element: WebElement? = null
     private val url: String
+    // 웹드라이버 설치경로 설정
+    private val WEB_DRIVER_ID = "webdriver.chrome.driver"
+    private val WEB_DRIVER_PATH = "~/Projects/chromedriver.exe"
 
     init {
         System.setProperty(WEB_DRIVER_ID, WEB_DRIVER_PATH)
@@ -45,18 +50,6 @@ class Main {
             e.printStackTrace()
         } finally {
             driver.close()
-        }
-    }
-
-    companion object {
-        // 웹드라이버 설치경로 설정
-        var WEB_DRIVER_ID = "webdriver.chrome.driver"
-        var WEB_DRIVER_PATH = "C:/Users/박경수/Downloads/chromedriver-win64/chromedriver-win64/chromedriver.exe"
-        @JvmStatic
-        fun main(args: Array<String>) {
-            val bot1 = Main()
-            bot1.activateBot()
-            System.exit(0)
         }
     }
 }

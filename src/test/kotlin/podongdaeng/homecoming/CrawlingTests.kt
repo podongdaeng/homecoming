@@ -1,7 +1,7 @@
 package podongdaeng.homecoming
 
 import TerrorlessCrawling
-import kotlin.test.Test
+import org.junit.jupiter.api.Test
 
 class CrawlingTests {
     private val sel = TerrorlessCrawling()

@@ -12,7 +12,7 @@ class TerrorlessCrawling {
     private val url: String
     // 웹드라이버 설치경로 설정
     private val WEB_DRIVER_ID = "webdriver.chrome.driver"
-    private val WEB_DRIVER_PATH = "~/Projects/chromedriver.exe"
+    private val WEB_DRIVER_PATH = "chromedriver.exe"
 
     init {
         System.setProperty(WEB_DRIVER_ID, WEB_DRIVER_PATH)

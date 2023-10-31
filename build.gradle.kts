@@ -29,8 +29,6 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java
 	implementation("org.seleniumhq.selenium:selenium-java:4.14.1")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
-	testImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.9.10")
-	testImplementation(kotlin("test"))
 }
 
 tasks.withType<KotlinCompile> {

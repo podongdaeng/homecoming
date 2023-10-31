@@ -12,13 +12,15 @@ class TerrorlessCrawling {
     private val url: String
     // 웹드라이버 설치경로 설정
     private val WEB_DRIVER_ID = "webdriver.chrome.driver"
-    private val WEB_DRIVER_PATH = "~/Projects/chromedriver.exe"
+    private val WEB_DRIVER_PATH = "chromedriver"
 
     init {
         System.setProperty(WEB_DRIVER_ID, WEB_DRIVER_PATH)
         val options = ChromeOptions()
+        options.setBinary("")
         options.addArguments("--start-maximized")
         options.addArguments("--disable-popup-blocking")
+        options.addArguments("--disable-default-apps")
         driver = ChromeDriver(options)
         url = "https://terrorless.01ab.net/"
     }

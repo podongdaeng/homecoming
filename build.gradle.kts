@@ -5,6 +5,7 @@ plugins {
 	id("io.spring.dependency-management") version "1.1.3"
 	kotlin("jvm") version "1.8.22"
 	kotlin("plugin.spring") version "1.8.22"
+	kotlin("plugin.serialization") version "1.9.10"
 }
 
 group = "podongdaeng"
@@ -28,6 +29,7 @@ dependencies {
 //	runtimeOnly("org.springframework.boot:spring-boot-devtools")
 	// https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java
 	implementation("org.seleniumhq.selenium:selenium-java:4.14.1")
+	implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 

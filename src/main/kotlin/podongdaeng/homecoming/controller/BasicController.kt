@@ -46,7 +46,6 @@ class AddressService(
 class AddressController @Autowired constructor(private val addressService: AddressService) {
     @GetMapping("/near-station")
     fun searchAddress(@RequestParam("gps_lati") gpsLati: String, @RequestParam("gps_long") gpsLong: String): String {
-        println(gpsLati)
         return addressService.searchNearStationByGps(gpsLati.toDouble(), gpsLong.toDouble())
     }
 }

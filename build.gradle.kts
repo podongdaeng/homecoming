@@ -22,10 +22,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.springframework.boot:spring-boot-starter-web")
-//	implementation("org.springframework.boot:spring-boot-starter-data-jpa") // TODO: not yet used
-//	runtimeOnly("com.h2database:h2")
-//	implementation("org.springframework.boot:spring-boot-starter-mustache")
-//	runtimeOnly("org.springframework.boot:spring-boot-devtools")
+	implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.1")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 

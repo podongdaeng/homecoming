@@ -13,6 +13,7 @@ import java.net.http.HttpRequest
 import java.net.http.HttpResponse
 
 
+
 @Controller
 class BasicController {
     @GetMapping("/")
@@ -30,7 +31,7 @@ class AddressService(
         gpsLong: Double,
     ): String {
         val apiUrl =
-            "http://apis.data.go.kr/1613000/BusSttnInfoInqireService/getCrdntPrxmtSttnList?serviceKey=${apiKey}&pageNo=1&numOfRows=30&_type=xml&gpsLati=${gpsLati}&gpsLong=${gpsLong}"
+            "http://apis.data.go.kr/1613000/BusSttnInfoInqireService/getCrdntPrxmtSttnList?serviceKey=${apiKey}&pageNo=1&numOfRows=30&_type=json&gpsLati=${gpsLati}&gpsLong=${gpsLong}"
         val client = HttpClient.newBuilder().build();
         val request = HttpRequest.newBuilder()
             .uri(URI.create(apiUrl))
@@ -46,6 +47,21 @@ class AddressService(
 class AddressController @Autowired constructor(private val addressService: AddressService) {
     @GetMapping("/near-station")
     fun searchAddress(@RequestParam("gps_lati") gpsLati: String, @RequestParam("gps_long") gpsLong: String): String {
-        return addressService.searchNearStationByGps(gpsLati.toDouble(), gpsLong.toDouble())
+        val jsonString = addressService.searchNearStationByGps(gpsLati.toDouble(), gpsLong.toDouble())
+        /*
+        val BS: List<BusStation> = parseJsonResponse(jsonString)
+
+        val result = StringBuilder()
+
+        for (busStation in BS) {
+            result.append("City Code: ${busStation.citycode}, ")
+            result.append("Latitude: ${busStation.gpslati}, ")
+            result.append("Longitude: ${busStation.gpslong}, ")
+            result.append("Node ID: ${busStation.nodeid}, ")
+            result.append("Node Name: ${busStation.nodenm}, ")
+            result.append("Node No: ${busStation.nodeno}\n")
+        }
+        */
+        return jsonString
     }
 }

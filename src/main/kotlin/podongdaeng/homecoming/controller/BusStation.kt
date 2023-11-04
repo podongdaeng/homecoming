@@ -1,10 +1,10 @@
 package podongdaeng.homecoming.controller
+import com.google.gson.Gson
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 
-@Serializable
 data class BusStation(
     val citycode: Int,
     val gpslati: Double,
@@ -14,30 +14,30 @@ data class BusStation(
     val nodeno: Int
 )
 
-@Serializable
-data class ResponseBody(
+data class Response(
+    val response: ResponseData
+)
+
+data class ResponseData(
+    val header: Header,
     val body: Body
 )
-
-@Serializable
+data class Header(
+    val resultCode: String,
+    val resultMsg: String
+)
 data class Body(
-    val items: Items
+    val items: Items,
+    val numOfRows: Int,
+    val pageNo: Int,
+    val totalCount: Int
 )
 
-@Serializable
 data class Items(
     val item: List<BusStation>
 )
-fun parseJsonResponse(jsonString: String): List<BusStation> {
-    val response = Json.decodeFromString<ResponseBody>(jsonString)
-    return response.body.items.item.map{
-        BusStation(
-            citycode= it.citycode,
-            gpslati= it.gpslati,
-            gpslong= it.gpslong,
-            nodeid= it.nodeid,
-            nodenm= it.nodenm,
-            nodeno= it.nodeno
-        )
-    }
+
+fun parseJsonResponse(jsonString: String): Response{
+    val gson=Gson()
+    return gson.fromJson(jsonString, Response::class.java)
 }

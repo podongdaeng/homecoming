@@ -11,16 +11,8 @@ import java.net.URI
 import java.net.http.HttpClient
 import java.net.http.HttpRequest
 import java.net.http.HttpResponse
+import com.google.gson.Gson
 
-
-
-@Controller
-class BasicController {
-    @GetMapping("/")
-    fun home(): String {
-        return "index.html"
-    }
-}
 
 @Service
 class AddressService(
@@ -46,22 +38,12 @@ class AddressService(
 @RestController
 class AddressController @Autowired constructor(private val addressService: AddressService) {
     @GetMapping("/near-station")
-    fun searchAddress(@RequestParam("gps_lati") gpsLati: String, @RequestParam("gps_long") gpsLong: String): String {
+    fun searchAddress(@RequestParam("gps_lati") gpsLati: String, @RequestParam("gps_long") gpsLong: String): List<BusStation> {
         val jsonString = addressService.searchNearStationByGps(gpsLati.toDouble(), gpsLong.toDouble())
-        /*
-        val BS: List<BusStation> = parseJsonResponse(jsonString)
 
-        val result = StringBuilder()
+        val response = parseJsonResponse(jsonString)
+        val jsonResult=response.response.body.items.item
 
-        for (busStation in BS) {
-            result.append("City Code: ${busStation.citycode}, ")
-            result.append("Latitude: ${busStation.gpslati}, ")
-            result.append("Longitude: ${busStation.gpslong}, ")
-            result.append("Node ID: ${busStation.nodeid}, ")
-            result.append("Node Name: ${busStation.nodenm}, ")
-            result.append("Node No: ${busStation.nodeno}\n")
-        }
-        */
-        return jsonString
+        return jsonResult
     }
 }

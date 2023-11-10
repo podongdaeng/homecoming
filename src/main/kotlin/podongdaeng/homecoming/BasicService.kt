@@ -39,7 +39,6 @@ class BasicService {
             val response = client.send(request, HttpResponse.BodyHandlers.ofString())
             val print = response.body()
             val terrorlessData = Json.decodeFromString<TerrorlessData>(print)
-            println(terrorlessData.result.data.json.threats.joinToString(separator = "\n"))
             return terrorlessData
         }
     }

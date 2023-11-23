@@ -13,7 +13,11 @@ data class BusStation(
     val nodenm: String,
     val nodeno: Int
 )
-
+data class GpsCoordinates(
+    val name: String,
+    val lati: Double,
+    val long: Double,
+)
 data class Response(
     val response: ResponseData
 )

@@ -19,13 +19,14 @@ class BasicController {
     fun searchAddress(
         @RequestParam("gps_lati") gpsLati: String,
         @RequestParam("gps_long") gpsLong: String
-    ): List<BusStation> {
+    ): List<GpsCoordinates> {
         val jsonString = addressService.searchNearStationByGps(gpsLati.toDouble(), gpsLong.toDouble())
 
         val response = parseJsonResponse(jsonString)
         val jsonResult = response.response.body.items.item
 
-        return jsonResult
+        return jsonResult.map{busStation -> GpsCoordinates(busStation.nodenm,busStation.gpslati,busStation.gpslong)}
+
     }
 
     @GetMapping("/terrorless-crawling")

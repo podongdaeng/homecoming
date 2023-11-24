@@ -46,7 +46,7 @@ class BasicController {
         }
         val listOfGps = when (testNumber) {
             1 -> {
-                val fixedGpsList = (1..3).map {
+                val fixedGpsList = (0..3).map {
                     TestGpsResponse(
                         latitude = gpsLatiLowerLeft + (gpsLatiUpperRight - gpsLatiLowerLeft) * it,
                         longitude = gpsLongLowerLeft + (gpsLongUpperRight - gpsLongLowerLeft) * it

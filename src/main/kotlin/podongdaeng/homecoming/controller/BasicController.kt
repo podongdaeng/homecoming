@@ -1,6 +1,5 @@
 package podongdaeng.homecoming.controller
 
-import org.springframework.beans.factory.annotation.Value
 import podongdaeng.homecoming.model.TerrorlessData
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -12,8 +11,9 @@ import podongdaeng.homecoming.service.AddressService
 
 @RestController
 class BasicController(
-    private val addressService : AddressService
-) {
+    @Value("\${api.key}") private val apiKey: String
+){
+    private val addressService = BasicService.AddressService(apiKey)
     private val terrorlessCrawlingService = BasicService.TerrorlessCrawlingService()
 
     @GetMapping("/near-station")
@@ -21,7 +21,13 @@ class BasicController(
         @RequestParam("gps_lati") gpsLati: String,
         @RequestParam("gps_long") gpsLong: String
     ): List<GpsCoordinates> {
-        return addressService.searchNearStationByGps(gpsLati.toDouble(), gpsLong.toDouble())
+        val jsonString = addressService.searchNearStationByGps(gpsLati.toDouble(), gpsLong.toDouble())
+
+        val response = parseJsonResponse(jsonString)
+        val jsonResult = response.response.body.items.item
+
+        return jsonResult.map{busStation -> GpsCoordinates(busStation.nodenm,busStation.gpslati,busStation.gpslong)}
+
     }
 
     @GetMapping("/terrorless-crawling")
@@ -50,7 +56,6 @@ class BasicController(
                 }
                 fixedGpsList
             }
-
             2 -> {
                 val randomGpsList = (1..4).map {
                     TestGpsResponse(
@@ -60,7 +65,6 @@ class BasicController(
                 }
                 randomGpsList
             }
-
             3 -> {
                 val singleGps = TestGpsResponse(
                     latitude = gpsLatiLowerLeft + (gpsLatiUpperRight - gpsLatiLowerLeft) / 2,
@@ -68,7 +72,6 @@ class BasicController(
                 )
                 listOf(singleGps)
             }
-
             else -> emptyList()
         }
         return listOfGps

@@ -1,5 +1,6 @@
 package podongdaeng.homecoming.controller
 
+import org.springframework.beans.factory.annotation.Value
 import podongdaeng.homecoming.model.TerrorlessData
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -9,9 +10,10 @@ import podongdaeng.homecoming.BasicService
 import podongdaeng.homecoming.model.TestGpsResponse
 
 @RestController
-class BasicController {
-    private val addressService =
-        BasicService.AddressService("jCzTbBpMghoBSBPXtV4dcVJEDWZGY6qpotKwLaTw7VU3cSeBk14uXozpSYvGQ7CQSDLM9GVHyqCPhAnNuafLGg%3D%3D")
+class BasicController(
+    @Value("\${api.key}") private val apiKey: String
+){
+    private val addressService = BasicService.AddressService(apiKey)
     private val terrorlessCrawlingService = BasicService.TerrorlessCrawlingService()
 
     // TODO: application.property 등의 파일로 api.key 옮기기

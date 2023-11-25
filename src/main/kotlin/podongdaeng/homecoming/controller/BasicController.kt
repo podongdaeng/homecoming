@@ -1,19 +1,16 @@
 package podongdaeng.homecoming.controller
 
-import org.springframework.beans.factory.annotation.Value
 import podongdaeng.homecoming.model.TerrorlessData
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.bind.annotation.RequestParam
-import podongdaeng.homecoming.BasicService
+import podongdaeng.homecoming.service.BasicService
 import podongdaeng.homecoming.model.TestGpsResponse
-import podongdaeng.homecoming.service.AddressService
 
 @RestController
-class BasicController(
-    private val addressService : AddressService
-) {
+class BasicController {
+    private val addressService : BasicService.AddressService()
     private val terrorlessCrawlingService = BasicService.TerrorlessCrawlingService()
 
     @GetMapping("/near-station")

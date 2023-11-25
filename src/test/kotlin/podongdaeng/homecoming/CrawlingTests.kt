@@ -2,6 +2,7 @@ package podongdaeng.homecoming
 
 import org.junit.jupiter.api.Test
 import podongdaeng.homecoming.controller.BasicController
+import podongdaeng.homecoming.service.BasicService
 
 class CrawlingTests {
     private val sel = BasicService.TerrorlessCrawlingService()

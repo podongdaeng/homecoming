@@ -11,9 +11,8 @@ import podongdaeng.homecoming.model.TestGpsResponse
 
 
 @RestController
-class BasicController(
-    private val addressService: BasicService.AddressService,
-){
+class BasicController{
+    private val addressService: BasicService.AddressService()
     private val terrorlessCrawlingService = BasicService.TerrorlessCrawlingService()
 
     @GetMapping("/near-station")

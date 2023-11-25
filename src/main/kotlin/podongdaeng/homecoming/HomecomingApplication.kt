@@ -8,7 +8,6 @@ import org.springframework.boot.SpringApplication
 
 @SpringBootApplication
 @EnableFeignClients
-@ComponentScan("podongdaeng.homecoming","podongdaeng.homecoming.client")
 class HomecomingApplication
 
 fun main(args: Array<String>) {

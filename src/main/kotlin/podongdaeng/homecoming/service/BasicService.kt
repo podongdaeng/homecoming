@@ -15,9 +15,10 @@ import java.net.http.HttpResponse
 
 class BasicService {
     class AddressService(
-        private val addressFeignClient: AddressFeignClient,
         @Value("\${api.key}") private val apiKey: String
     ){
+        private val addressFeignClient: AddressFeignClient()
+
         fun searchNearStationByGps(
             gpsLati: Double,
             gpsLong: Double,

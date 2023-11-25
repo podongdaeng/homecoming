@@ -6,14 +6,14 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.bind.annotation.RequestParam
-import podongdaeng.homecoming.BasicService
+import podongdaeng.homecoming.service.BasicService
 import podongdaeng.homecoming.model.TestGpsResponse
-import podongdaeng.homecoming.service.AddressService
+
 
 @RestController
 class BasicController(
-    private val addressService : AddressService
-) {
+    private val addressService: BasicService.AddressService,
+){
     private val terrorlessCrawlingService = BasicService.TerrorlessCrawlingService()
 
     @GetMapping("/near-station")
@@ -50,7 +50,6 @@ class BasicController(
                 }
                 fixedGpsList
             }
-
             2 -> {
                 val randomGpsList = (1..4).map {
                     TestGpsResponse(
@@ -60,7 +59,6 @@ class BasicController(
                 }
                 randomGpsList
             }
-
             3 -> {
                 val singleGps = TestGpsResponse(
                     latitude = gpsLatiLowerLeft + (gpsLatiUpperRight - gpsLatiLowerLeft) / 2,
@@ -68,7 +66,6 @@ class BasicController(
                 )
                 listOf(singleGps)
             }
-
             else -> emptyList()
         }
         return listOfGps

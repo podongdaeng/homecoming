@@ -7,11 +7,9 @@ import podongdaeng.homecoming.controller.GpsCoordinates
 
 @Service
 class AddressService(
-    private val addressFeignClient: AddressFeignClient
+    private val addressFeignClient: AddressFeignClient,
+    @Value("\${api.key}") private val apiKey: String
 ){
-    @Value("\${api.key}")
-    private val apiKey: String = ""
-
     fun searchNearStationByGps(
         gpsLati: Double,
         gpsLong: Double,

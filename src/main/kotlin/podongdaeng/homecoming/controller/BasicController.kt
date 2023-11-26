@@ -16,7 +16,6 @@ class BasicController(
     private val addressService = BasicService.AddressService(apiKey)
     private val terrorlessCrawlingService = BasicService.TerrorlessCrawlingService()
 
-    // TODO: application.property 등의 파일로 api.key 옮기기
     @GetMapping("/near-station")
     fun searchAddress(
         @RequestParam("gps_lati") gpsLati: String,

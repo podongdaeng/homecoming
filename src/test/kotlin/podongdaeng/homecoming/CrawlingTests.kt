@@ -3,9 +3,9 @@ package podongdaeng.homecoming
 import org.junit.jupiter.api.Test
 import podongdaeng.homecoming.controller.BasicController
 
-class CrawlingTests {
+class CrawlingTests() {
     private val sel = BasicService.TerrorlessCrawlingService()
-    private val stationGpsController = BasicController()
+    private val stationGpsController = BasicController("asdf")
     @Test
     fun test1() {
         sel.tryCrawling()

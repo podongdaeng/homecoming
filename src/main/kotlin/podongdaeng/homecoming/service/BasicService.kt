@@ -1,7 +1,9 @@
 package podongdaeng.homecoming.service
 
+import feign.Feign
 import podongdaeng.homecoming.model.TerrorlessData
 import kotlinx.serialization.json.Json
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import podongdaeng.homecoming.client.AddressFeignClient
 import java.net.URI
@@ -12,9 +14,9 @@ import podongdaeng.homecoming.controller.GpsCoordinates
 
 class BasicService {
     class AddressService(
-        private val addressFeignClient: AddressFeignClient,
-        @Value("\${api.key}") private val apiKey: String
+        @Value("\${api.key}") private val apiKey: String,
     ){
+        @Autowired private val addressFeignClient = AddressFeignClient.AddressFeignClientImpl()
         fun searchNearStationByGps(
             gpsLati: Double,
             gpsLong: Double,

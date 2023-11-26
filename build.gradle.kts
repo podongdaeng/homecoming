@@ -27,6 +27,7 @@ dependencies {
 	implementation ("org.springframework.cloud:spring-cloud-starter-openfeign:3.1.5")
 	implementation ("io.github.openfeign:feign-gson:11.0")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+	implementation ("org.apache.poi:poi-ooxml:5.2.5")
 
 //	implementation("org.springframework.boot:spring-boot-starter-data-jpa") // TODO: not yet used
 //	runtimeOnly("com.h2database:h2")

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.bind.annotation.RequestParam
 import podongdaeng.homecoming.BasicService
+import podongdaeng.homecoming.model.TerrorlessData_Simple
 import podongdaeng.homecoming.model.TestGpsResponse
 
 @RestController
@@ -31,8 +32,21 @@ class BasicController(
     }
 
     @GetMapping("/terrorless-crawling")
-    fun searchTerrorless(): TerrorlessData {
-        return terrorlessCrawlingService.tryCrawling()
+    fun searchTerrorless(  @RequestParam("gps_lati") gpsLati: Double,
+                           @RequestParam("gps_long") gpsLong: Double
+    ): List<TerrorlessData_Simple> {
+        //요청을 받을 때가 DB에 사전 저장 후 DB자료를 기준으로 해당 List만 전달해주도록
+        val datas=terrorlessCrawlingService.tryCrawling()
+        val threatDatas= mutableListOf<TerrorlessData_Simple>()
+        for(data in datas.result.data.json.threats)
+        {
+            if(data.locationLatitude!=null) //parameter위치를 기준으로 판별을 위한 과정 추가 및 수정해야함.
+            {
+                val simpleData=TerrorlessData_Simple(data.locationName, data.locationLatitude, data.locationLongitude)
+                threatDatas.add(simpleData)
+            }
+        }
+        return threatDatas
     }
 
     @GetMapping("/front-test/{number}")

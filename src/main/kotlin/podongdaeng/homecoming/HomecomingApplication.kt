@@ -4,6 +4,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.cloud.openfeign.EnableFeignClients
 import podongdaeng.homecoming.util.readExcelFile
+import podongdaeng.homecoming.util.writeBStoFile
 import java.io.File
 
 @SpringBootApplication
@@ -13,6 +14,7 @@ class HomecomingApplication
 fun main(args: Array<String>) {
 
 	val csvFile = File("C:/Users/SAMSUNG/Desktop/2023-2/캡스톤디자인1/국토교통부_전국 버스정류장 위치정보.xlsx")
-	val csvBusStations = readExcelFile(csvFile)
+	val busStations = readExcelFile(csvFile)
+	writeBStoFile(busStations,File("C:/Users/SAMSUNG/Documents/GitHub/homecoming/src/main/kotlin/podongdaeng/homecoming/util/Coordinates.kt"))
 	runApplication<HomecomingApplication>(*args)
 }

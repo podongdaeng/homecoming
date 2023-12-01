@@ -46,3 +46,9 @@ data class TerrorlessData(
         }
     }
 }
+
+data class TerrorlessDataSimple(
+    val name: String,
+    val latitude: Double?,
+    val longitude: Double?
+)

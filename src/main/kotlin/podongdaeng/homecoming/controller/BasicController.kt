@@ -7,13 +7,13 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.bind.annotation.RequestParam
 import podongdaeng.homecoming.BasicService
-import podongdaeng.homecoming.model.TerrorlessData_Simple
+import podongdaeng.homecoming.model.TerrorlessDataSimple
 import podongdaeng.homecoming.model.TestGpsResponse
 
 @RestController
 class BasicController(
     @Value("\${api.key}") private val apiKey: String
-){
+) {
     private val addressService = BasicService.AddressService(apiKey)
     private val terrorlessCrawlingService = BasicService.TerrorlessCrawlingService()
 
@@ -27,22 +27,28 @@ class BasicController(
         val response = parseJsonResponse(jsonString)
         val jsonResult = response.response.body.items.item
 
-        return jsonResult.map{busStation -> GpsCoordinates(busStation.nodenm,busStation.gpslati,busStation.gpslong)}
+        return jsonResult.map { busStation ->
+            GpsCoordinates(
+                busStation.nodenm,
+                busStation.gpslati,
+                busStation.gpslong
+            )
+        }
 
     }
 
     @GetMapping("/near-threat")
-    fun searchTerrorless(  @RequestParam("gps_lati") gpsLati: Double,
-                           @RequestParam("gps_long") gpsLong: Double
-    ): List<TerrorlessData_Simple> {
+    fun searchTerrorless(
+        @RequestParam("gps_lati") gpsLati: Double,
+        @RequestParam("gps_long") gpsLong: Double
+    ): List<TerrorlessDataSimple> {
         //요청을 받을 때가 DB에 사전 저장 후 DB자료를 기준으로 해당 List만 전달해주도록
-        val datas=terrorlessCrawlingService.tryCrawling()
-        val threatDatas= mutableListOf<TerrorlessData_Simple>()
-        for(data in datas.result.data.json.threats)
-        {
-            if(data.locationLatitude!=null) //parameter위치를 기준으로 판별을 위한 과정 추가 및 수정해야함.
+        val datas = terrorlessCrawlingService.tryCrawling()
+        val threatDatas = mutableListOf<TerrorlessDataSimple>()
+        for (data in datas.result.data.json.threats) {
+            if (data.locationLatitude != null) //parameter위치를 기준으로 판별을 위한 과정 추가 및 수정해야함.
             {
-                val simpleData=TerrorlessData_Simple(data.locationName, data.locationLatitude, data.locationLongitude)
+                val simpleData = TerrorlessDataSimple(data.locationName, data.locationLatitude, data.locationLongitude)
                 threatDatas.add(simpleData)
             }
         }
@@ -70,6 +76,7 @@ class BasicController(
                 }
                 fixedGpsList
             }
+
             2 -> {
                 val randomGpsList = (1..4).map {
                     TestGpsResponse(
@@ -79,6 +86,7 @@ class BasicController(
                 }
                 randomGpsList
             }
+
             3 -> {
                 val singleGps = TestGpsResponse(
                     latitude = gpsLatiLowerLeft + (gpsLatiUpperRight - gpsLatiLowerLeft) / 2,
@@ -86,6 +94,7 @@ class BasicController(
                 )
                 listOf(singleGps)
             }
+
             else -> emptyList()
         }
         return listOfGps

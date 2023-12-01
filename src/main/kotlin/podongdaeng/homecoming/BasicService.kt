@@ -39,6 +39,8 @@ class BasicService {
             val response = client.send(request, HttpResponse.BodyHandlers.ofString())
             val print = response.body()
             val terrorlessData = Json.decodeFromString<TerrorlessData>(print)
+            //DB에 저장하는 과정 추가
+            
             return terrorlessData
         }
     }

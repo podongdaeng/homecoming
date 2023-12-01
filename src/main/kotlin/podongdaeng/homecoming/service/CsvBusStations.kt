@@ -42,7 +42,7 @@ fun writeBStoFile(busStations:List<GpsCoordinates>, outputFile: File){
 
         busStations.forEach { busStation ->
             writer.write(
-                "        GpsCoordinates(\"${busStation.name}\",\"${busStation.lati}\",\"${busStation.long}\"\n"
+                "        GpsCoordinates(\"${busStation.name}\",\"${busStation.latitude}\",\"${busStation.longitude}\"\n"
             )
         }
 

@@ -26,11 +26,10 @@ class BasicController(
         @RequestParam("gps_long") gpsLong: String
     ): List<GpsCoordinates> {
         val jsonString = getBusStationInfo.searchNearStationByGps(gpsLati.toDouble(), gpsLong.toDouble())
-
         val response = Response.parseJsonResponse(jsonString)
         val jsonResult = response.response.body.items.item
 
-        return jsonResult.map{busStation -> GpsCoordinates(busStation.nodenm,busStation.gpslati,busStation.gpslong) }
+        return jsonResult?.map{busStation -> GpsCoordinates(busStation.nodenm,busStation.gpslati,busStation.gpslong) } ?: emptyList()
 
     }
 

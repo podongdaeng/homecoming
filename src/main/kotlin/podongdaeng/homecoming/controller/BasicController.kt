@@ -6,34 +6,31 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.bind.annotation.RequestParam
+import podongdaeng.homecoming.clients.GetBusStationInfo
+import podongdaeng.homecoming.clients.TerrorlessCrawlingService
 import podongdaeng.homecoming.BasicService
 import podongdaeng.homecoming.model.TerrorlessDataSimple
 import podongdaeng.homecoming.model.TestGpsResponse
+import podongdaeng.homecoming.util.GpsCoordinates
+import podongdaeng.homecoming.util.Response
 
 @RestController
 class BasicController(
-    @Value("\${api.key}") private val apiKey: String
-) {
-    private val addressService = BasicService.AddressService(apiKey)
-    private val terrorlessCrawlingService = BasicService.TerrorlessCrawlingService()
+    private val getBusStationInfo: GetBusStationInfo,
+    private val terrorlessCrawlingService: TerrorlessCrawlingService
+){
 
     @GetMapping("/near-station")
-    fun searchAddress(
+    fun parseBusInfo(
         @RequestParam("gps_lati") gpsLati: String,
         @RequestParam("gps_long") gpsLong: String
     ): List<GpsCoordinates> {
-        val jsonString = addressService.searchNearStationByGps(gpsLati.toDouble(), gpsLong.toDouble())
+        val jsonString = getBusStationInfo.searchNearStationByGps(gpsLati.toDouble(), gpsLong.toDouble())
 
-        val response = parseJsonResponse(jsonString)
+        val response = Response.parseJsonResponse(jsonString)
         val jsonResult = response.response.body.items.item
 
-        return jsonResult.map { busStation ->
-            GpsCoordinates(
-                busStation.nodenm,
-                busStation.gpslati,
-                busStation.gpslong
-            )
-        }
+        return jsonResult.map{busStation -> GpsCoordinates(busStation.nodenm,busStation.gpslati,busStation.gpslong) }
 
     }
 

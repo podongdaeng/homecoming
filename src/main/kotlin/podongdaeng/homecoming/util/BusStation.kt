@@ -1,12 +1,16 @@
-package podongdaeng.homecoming.controller
+package podongdaeng.homecoming.util
 import com.google.gson.Gson
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.json.Json
 
 data class Response(
     val response: ResponseData
-)
+){
+    companion object{
+        fun parseJsonResponse(jsonString: String): Response {
+            val gson= Gson()
+            return gson.fromJson(jsonString, Response::class.java)
+        }
+    }
+}
 
 data class ResponseData(
     val header: Header,
@@ -41,7 +45,3 @@ data class GpsCoordinates(
     val long: Double,
 )
 
-fun parseJsonResponse(jsonString: String): Response{
-    val gson= Gson()
-    return gson.fromJson(jsonString, Response::class.java)
-}

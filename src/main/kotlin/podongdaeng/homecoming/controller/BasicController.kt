@@ -20,7 +20,6 @@ class BasicController(
     private val terrorlessCrawlingService: TerrorlessCrawlingService
 ){
 
-    // TODO: application.property 등의 파일로 api.key 옮기기
     @GetMapping("/near-station")
     fun parseBusInfo(
         @RequestParam("gps_lati") gpsLati: String,

@@ -15,8 +15,5 @@ class CrawlingTests() {
         sel.tryCrawling()
     }
 
-    @Test
-    fun test2() {
-        stationGpsController.parseBusInfo(gpsLati = 37.3.toString(), gpsLong = 126.5.toString())
-    }
+
 }

@@ -31,7 +31,7 @@ class BasicController(
 
     }
 
-    @GetMapping("/terrorless-crawling")
+    @GetMapping("/near-threat")
     fun searchTerrorless(  @RequestParam("gps_lati") gpsLati: Double,
                            @RequestParam("gps_long") gpsLong: Double
     ): List<TerrorlessData_Simple> {

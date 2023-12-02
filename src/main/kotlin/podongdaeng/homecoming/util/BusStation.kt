@@ -41,7 +41,7 @@ data class BusStation(
 )
 data class GpsCoordinates(
     val name: String,
-    val latitude: Double,
-    val longitude: Double,
+    val latitude: Double?,
+    val longitude: Double?,
 )
 

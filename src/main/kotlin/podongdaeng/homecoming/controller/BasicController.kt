@@ -1,23 +1,21 @@
 package podongdaeng.homecoming.controller
 
-import org.springframework.beans.factory.annotation.Value
-import podongdaeng.homecoming.model.TerrorlessData
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.bind.annotation.RequestParam
 import podongdaeng.homecoming.clients.GetBusStationInfo
 import podongdaeng.homecoming.clients.TerrorlessCrawlingService
-import podongdaeng.homecoming.BasicService
-import podongdaeng.homecoming.model.TerrorlessDataSimple
-import podongdaeng.homecoming.model.TestGpsResponse
+import podongdaeng.homecoming.model.*
+import podongdaeng.homecoming.service.GpsCoordinatesRepository
 import podongdaeng.homecoming.util.GpsCoordinates
 import podongdaeng.homecoming.util.Response
 
 @RestController
 class BasicController(
     private val getBusStationInfo: GetBusStationInfo,
-    private val terrorlessCrawlingService: TerrorlessCrawlingService
+    private val terrorlessCrawlingService: TerrorlessCrawlingService,
+    private val gpsCoordinatesRepository: GpsCoordinatesRepository
 ){
 
     @GetMapping("/near-station")
@@ -25,11 +23,20 @@ class BasicController(
         @RequestParam("gps_lati") gpsLati: String,
         @RequestParam("gps_long") gpsLong: String
     ): List<GpsCoordinates> {
+        val DBGPS = gpsCoordinatesRepository.findByLatitudeBetweenAndLongitudeBetween(
+            gpsLati.toDouble() - 0.01,
+            gpsLati.toDouble() + 0.01,
+            gpsLong.toDouble() - 0.01,
+            gpsLong.toDouble() + 0.01
+        )
+        if (DBGPS.isNotEmpty())
+            return DBGPS.map { GpsCoordinates(it.nodeName, it.latitude, it.longitude) }
         val jsonString = getBusStationInfo.searchNearStationByGps(gpsLati.toDouble(), gpsLong.toDouble())
-
         val response = Response.parseJsonResponse(jsonString)
         val jsonResult = response.response.body.items.item
 
+//        val gpsEntities = jsonResult.map{busStation -> GpsCoordinatesEntity(nodeName = busStation.nodenm,latitude = busStation.gpslati,longitude = busStation.gpslong) }
+//        gpsCoordinatesRepository.saveAll(gpsEntities)
         return jsonResult.map{busStation -> GpsCoordinates(busStation.nodenm,busStation.gpslati,busStation.gpslong) }
 
     }

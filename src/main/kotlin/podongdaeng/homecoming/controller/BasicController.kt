@@ -1,5 +1,6 @@
 package podongdaeng.homecoming.controller
 
+import com.google.gson.JsonSyntaxException
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RestController
@@ -10,6 +11,7 @@ import podongdaeng.homecoming.model.*
 import podongdaeng.homecoming.service.GpsCoordinatesRepository
 import podongdaeng.homecoming.util.GpsCoordinates
 import podongdaeng.homecoming.util.Response
+import java.lang.Exception
 
 @RestController
 class BasicController(
@@ -32,13 +34,29 @@ class BasicController(
         if (DBGPS.isNotEmpty())
             return DBGPS.map { GpsCoordinates(it.nodeName, it.latitude, it.longitude) }
         val jsonString = getBusStationInfo.searchNearStationByGps(gpsLati.toDouble(), gpsLong.toDouble())
-        val response = Response.parseJsonResponse(jsonString)
-        val jsonResult = response.response.body.items.item
+        try {
+            val response = Response.parseJsonResponse(jsonString)
+            val jsonResult = response.response.body.items.item
 
-//        val gpsEntities = jsonResult.map{busStation -> GpsCoordinatesEntity(nodeName = busStation.nodenm,latitude = busStation.gpslati,longitude = busStation.gpslong) }
-//        gpsCoordinatesRepository.saveAll(gpsEntities)
-        return jsonResult.map{busStation -> GpsCoordinates(busStation.nodenm,busStation.gpslati,busStation.gpslong) }
-
+            val gpsEntities = jsonResult.map { busStation ->
+                GpsCoordinatesEntity(
+                    nodeName = busStation.nodenm,
+                    latitude = busStation.gpslati,
+                    longitude = busStation.gpslong
+                )
+            }
+            gpsCoordinatesRepository.saveAll(gpsEntities)
+            return jsonResult.map { busStation ->
+                GpsCoordinates(
+                    busStation.nodenm,
+                    busStation.gpslati,
+                    busStation.gpslong
+                )
+            }
+        }
+        catch(e: JsonSyntaxException){
+            return emptyList()
+        }
     }
 
     @GetMapping("/near-threat")

@@ -12,7 +12,7 @@ data class GpsCoordinatesEntity(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = 0,
 
-    val nodeName: String="",
+    val name: String="",
     val latitude: Double=0.0,
     val longitude: Double=0.0
 )

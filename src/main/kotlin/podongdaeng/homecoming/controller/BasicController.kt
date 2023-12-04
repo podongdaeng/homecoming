@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam
 import podongdaeng.homecoming.clients.GetBusStationInfo
 import podongdaeng.homecoming.clients.TerrorlessCrawlingService
 import podongdaeng.homecoming.model.*
-import podongdaeng.homecoming.service.GpsCoordinatesRepository
+import podongdaeng.homecoming.service.*
 import podongdaeng.homecoming.util.GpsCoordinates
 import podongdaeng.homecoming.util.Response
 import java.lang.Exception
@@ -25,34 +25,15 @@ class BasicController(
         @RequestParam("gps_lati") gpsLati: String,
         @RequestParam("gps_long") gpsLong: String
     ): List<GpsCoordinates> {
-        val DBGPS = gpsCoordinatesRepository.findByLatitudeBetweenAndLongitudeBetween(
-            gpsLati.toDouble() - 0.01,
-            gpsLati.toDouble() + 0.01,
-            gpsLong.toDouble() - 0.01,
-            gpsLong.toDouble() + 0.01
-        )
+        val DBGPS = findGpsCoordinatesInRange(gpsLati,gpsLong,gpsCoordinatesRepository)
         if (DBGPS.isNotEmpty())
-            return DBGPS.map { GpsCoordinates(it.nodeName, it.latitude, it.longitude) }
+            return DBGPS.map { GpsCoordinates(it.name, it.latitude, it.longitude) }
         val jsonString = getBusStationInfo.searchNearStationByGps(gpsLati.toDouble(), gpsLong.toDouble())
         try {
             val response = Response.parseJsonResponse(jsonString)
-            val jsonResult = response.response.body.items.item
-
-            val gpsEntities = jsonResult.map { busStation ->
-                GpsCoordinatesEntity(
-                    nodeName = busStation.nodenm,
-                    latitude = busStation.gpslati,
-                    longitude = busStation.gpslong
-                )
-            }
+            val gpsEntities = mapBusStationsToEntities(response)
             gpsCoordinatesRepository.saveAll(gpsEntities)
-            return jsonResult.map { busStation ->
-                GpsCoordinates(
-                    busStation.nodenm,
-                    busStation.gpslati,
-                    busStation.gpslong
-                )
-            }
+            return mapGpsEntitiesToCoordinates(gpsEntities)
         }
         catch(e: JsonSyntaxException){
             return emptyList()

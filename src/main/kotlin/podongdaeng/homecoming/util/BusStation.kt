@@ -33,14 +33,14 @@ data class Items(
 
 data class BusStation(
     val citycode: Int,
-    val gpslati: Double,
-    val gpslong: Double,
+    val latitude: Double,
+    val longitude: Double,
     val nodeid: String,
-    val nodenm: String,
+    val name: String,
     val nodeno: Int
 )
 data class GpsCoordinates(
     val name: String="",
-    val latitude: Double?=0.0,
-    val longitude: Double?=0.0
+    val latitude: Double=0.0,
+    val longitude: Double=0.0
 )

@@ -42,14 +42,17 @@ class BasicController(
         @RequestParam("gps_lati") gpsLati: Double,
         @RequestParam("gps_long") gpsLong: Double
     ): List<TerrorlessDataSimple> {
-        //요청을 받을 때가 DB에 사전 저장 후 DB자료를 기준으로 해당 List만 전달해주도록
+        //요청을 받을 때가 아닌 DB에 사전 저장 후 DB자료를 기준으로 해당 List만 전달해주도록 해야함.
         val datas = terrorlessCrawlingService.tryCrawling()
         val threatDatas = mutableListOf<TerrorlessDataSimple>()
         for (data in datas.result.data.json.threats) {
-            if (data.locationLatitude != null) //parameter위치를 기준으로 판별을 위한 과정 추가 및 수정해야함.
+            if (data.locationLatitude != null && data.locationLongitude != null) //parameter위치를 기준으로 판별을 위한 과정 추가 및 수정해야함.
             {
-                val simpleData = TerrorlessDataSimple(data.locationName, data.locationLatitude, data.locationLongitude)
-                threatDatas.add(simpleData)
+                if((data.locationLatitude-gpsLati<0.01 || data.locationLatitude-gpsLati>-0.01)&&(data.locationLongitude-gpsLong<0.01 || data.locationLongitude-gpsLong>-0.01))
+                {
+                    val simpleData = TerrorlessDataSimple(data.locationName, data.locationLatitude, data.locationLongitude)
+                    threatDatas.add(simpleData)
+                }
             }
         }
         return threatDatas

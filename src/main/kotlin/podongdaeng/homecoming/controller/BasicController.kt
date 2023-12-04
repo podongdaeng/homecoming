@@ -1,6 +1,8 @@
 package podongdaeng.homecoming.controller
 
 import com.google.gson.JsonSyntaxException
+import org.springframework.scheduling.annotation.Scheduled
+import org.springframework.stereotype.Component
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RestController
@@ -13,13 +15,13 @@ import podongdaeng.homecoming.util.GpsCoordinates
 import podongdaeng.homecoming.util.Response
 import java.lang.Exception
 
+
 @RestController
 class BasicController(
     private val getBusStationInfo: GetBusStationInfo,
     private val terrorlessCrawlingService: TerrorlessCrawlingService,
     private val gpsCoordinatesRepository: GpsCoordinatesRepository
 ){
-
     @GetMapping("/near-station")
     fun parseBusInfo(
         @RequestParam("gps_lati") gpsLati: String,

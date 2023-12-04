@@ -48,7 +48,7 @@ class BasicController(
         for (data in datas.result.data.json.threats) {
             if (data.locationLatitude != null && data.locationLongitude != null) //parameter위치를 기준으로 판별을 위한 과정 추가 및 수정해야함.
             {
-                if((data.locationLatitude-gpsLati<0.01 || data.locationLatitude-gpsLati>-0.01)&&(data.locationLongitude-gpsLong<0.01 || data.locationLongitude-gpsLong>-0.01))
+                if((data.locationLatitude-gpsLati<0.01 && data.locationLatitude-gpsLati>-0.01)&&(data.locationLongitude-gpsLong<0.01 && data.locationLongitude-gpsLong>-0.01))
                 {
                     val simpleData = TerrorlessDataSimple(data.locationName, data.locationLatitude, data.locationLongitude)
                     threatDatas.add(simpleData)

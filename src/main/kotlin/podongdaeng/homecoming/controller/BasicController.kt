@@ -25,11 +25,16 @@ class BasicController(
         @RequestParam("gps_lati") gpsLati: String,
         @RequestParam("gps_long") gpsLong: String
     ): List<GpsCoordinates> {
-        val jsonString = getBusStationInfo.searchNearStationByGps(gpsLati.toDouble(), gpsLong.toDouble())
-        val response = Response.parseJsonResponse(jsonString)
-        val jsonResult = response.response.body.items.item
+        var lati = gpsLati.toDouble()
+        var long = gpsLong.toDouble()
+        val center = Response.parseJsonResponse(getBusStationInfo.searchNearStationByGps(lati, long)).response.body.items.item ?: emptyList()
+        val up = Response.parseJsonResponse(getBusStationInfo.searchNearStationByGps(lati + 0.005, long)).response.body.items.item?: emptyList()
+        val down = Response.parseJsonResponse(getBusStationInfo.searchNearStationByGps(lati - 0.005, long)).response.body.items.item?: emptyList()
+        val left = Response.parseJsonResponse(getBusStationInfo.searchNearStationByGps(lati, long - 0.005)).response.body.items.item?: emptyList()
+        val right = Response.parseJsonResponse(getBusStationInfo.searchNearStationByGps(lati, long + 0.005)).response.body.items.item?: emptyList()
+        val jsonResult = (center + up + down + left + right).distinctBy { it.nodeid }
 
-        return jsonResult?.map{busStation -> GpsCoordinates(busStation.nodenm,busStation.gpslati,busStation.gpslong) } ?: emptyList()
+        return jsonResult.map{busStation -> GpsCoordinates(busStation.nodenm,busStation.gpslati,busStation.gpslong) } ?: emptyList()
 
     }
 

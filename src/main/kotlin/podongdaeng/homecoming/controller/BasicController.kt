@@ -18,7 +18,7 @@ import podongdaeng.homecoming.util.Response
 class BasicController(
     private val getBusStationInfo: GetBusStationInfo,
     private val terrorlessCrawlingService: TerrorlessCrawlingService
-){
+) {
 
     @GetMapping("/near-station")
     fun parseBusInfo(
@@ -27,14 +27,42 @@ class BasicController(
     ): List<GpsCoordinates> {
         var lati = gpsLati.toDouble()
         var long = gpsLong.toDouble()
-        val center = Response.parseJsonResponse(getBusStationInfo.searchNearStationByGps(lati, long)).response.body.items.item ?: emptyList()
-        val up = Response.parseJsonResponse(getBusStationInfo.searchNearStationByGps(lati + 0.005, long)).response.body.items.item?: emptyList()
-        val down = Response.parseJsonResponse(getBusStationInfo.searchNearStationByGps(lati - 0.005, long)).response.body.items.item?: emptyList()
-        val left = Response.parseJsonResponse(getBusStationInfo.searchNearStationByGps(lati, long - 0.005)).response.body.items.item?: emptyList()
-        val right = Response.parseJsonResponse(getBusStationInfo.searchNearStationByGps(lati, long + 0.005)).response.body.items.item?: emptyList()
+        val center =
+            Response.parseJsonResponse(getBusStationInfo.searchNearStationByGps(lati, long)).response.body.items.item
+                ?: emptyList()
+        val up = Response.parseJsonResponse(
+            getBusStationInfo.searchNearStationByGps(
+                lati + 0.01,
+                long
+            )
+        ).response.body.items.item ?: emptyList()
+        val down = Response.parseJsonResponse(
+            getBusStationInfo.searchNearStationByGps(
+                lati - 0.01,
+                long
+            )
+        ).response.body.items.item ?: emptyList()
+        val left = Response.parseJsonResponse(
+            getBusStationInfo.searchNearStationByGps(
+                lati,
+                long - 0.01
+            )
+        ).response.body.items.item ?: emptyList()
+        val right = Response.parseJsonResponse(
+            getBusStationInfo.searchNearStationByGps(
+                lati,
+                long + 0.01
+            )
+        ).response.body.items.item ?: emptyList()
         val jsonResult = (center + up + down + left + right).distinctBy { it.nodeid }
 
-        return jsonResult.map{busStation -> GpsCoordinates(busStation.nodenm,busStation.gpslati,busStation.gpslong) } ?: emptyList()
+        return jsonResult.map { busStation ->
+            GpsCoordinates(
+                busStation.nodenm,
+                busStation.gpslati,
+                busStation.gpslong
+            )
+        } ?: emptyList()
 
     }
 
@@ -49,9 +77,9 @@ class BasicController(
         for (data in datas.result.data.json.threats) {
             if (data.locationLatitude != null && data.locationLongitude != null) //parameter위치를 기준으로 판별을 위한 과정 추가 및 수정해야함.
             {
-                if((data.locationLatitude-gpsLati<0.01 && data.locationLatitude-gpsLati>-0.01)&&(data.locationLongitude-gpsLong<0.01 && data.locationLongitude-gpsLong>-0.01))
-                {
-                    val simpleData = TerrorlessDataSimple(data.locationName, data.locationLatitude, data.locationLongitude)
+                if ((data.locationLatitude - gpsLati < 0.01 && data.locationLatitude - gpsLati > -0.01) && (data.locationLongitude - gpsLong < 0.01 && data.locationLongitude - gpsLong > -0.01)) {
+                    val simpleData =
+                        TerrorlessDataSimple(data.locationName, data.locationLatitude, data.locationLongitude)
                     threatDatas.add(simpleData)
                 }
             }

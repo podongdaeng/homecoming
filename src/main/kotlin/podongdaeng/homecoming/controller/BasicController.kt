@@ -126,8 +126,7 @@ class BasicController(
                 busStation.gpslati,
                 busStation.gpslong
             )
-        } ?: emptyList()
-
+        }
     }
 
     @GetMapping("/near-threat")

@@ -1,6 +1,7 @@
 package podongdaeng.homecoming.util
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import java.time.LocalDateTime
 
 @Serializable
 data class Response(
@@ -9,7 +10,7 @@ data class Response(
     companion object{
         fun parseJsonResponse(jsonString: String): Response {
             val fixedString = jsonString.replace("\"\"", "{}") // TODO: better parsing
-            println(fixedString)
+            println("${LocalDateTime.now()} / incoming jsonString : $fixedString")
             return Json.decodeFromString<Response>(fixedString)
         }
     }

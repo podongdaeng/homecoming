@@ -14,6 +14,7 @@ import podongdaeng.homecoming.model.TestGpsResponse
 import podongdaeng.homecoming.util.BusStation
 import podongdaeng.homecoming.util.GpsCoordinates
 import podongdaeng.homecoming.util.Response
+import java.time.LocalDateTime
 
 @RestController
 class BasicController(
@@ -116,9 +117,28 @@ class BasicController(
                 nodenm = "신촌오거리.현대백화점",
                 nodeno = 23034,
             ),
+            BusStation(
+                citycode = 23,
+                gpslati = 37.540240,
+                gpslong = 126.946609,
+                nodeid = "ICB1130000092",
+                nodenm = "마포역",
+                nodeno = 14002,
+            ),
+            BusStation(
+                citycode = 23,
+                gpslati = 37.540888,
+                gpslong = 126.947862,
+                nodeid = "ICB1130000001",
+                nodenm = "마포역",
+                nodeno = 14001,
+            ),
         )
 
         val jsonResult = (defaultResponse + center + up + down + left + right).distinctBy { it.nodeid }.sortedBy { it.nodeid }
+
+        println("${LocalDateTime.now()} BusStation call final json: ")
+        println(jsonResult.joinToString(separator = "\n"))
 
         return jsonResult.map { busStation ->
             GpsCoordinates(
@@ -128,6 +148,87 @@ class BasicController(
             )
         }
     }
+
+    @GetMapping("/safe-near-station")
+    fun parseBusInfoSafe(
+        @RequestParam("gps_lati") gpsLati: String,
+        @RequestParam("gps_long") gpsLong: String
+    ): List<GpsCoordinates> {
+        var lati = gpsLati.toDouble()
+        var long = gpsLong.toDouble()
+
+        val defaultResponse = listOf(
+            BusStation(
+                citycode = 23,
+                gpslati = 37.556008,
+                gpslong = 126.939948,
+                nodeid = "ICB113000419",
+                nodenm = "신촌오거리.2호선신촌역",
+                nodeno = 23035,
+            ),
+            BusStation(
+                citycode = 23,
+                gpslati = 37.556198,
+                gpslong = 126.939844,
+                nodeid = "ICB112900226",
+                nodenm = "신촌역2호선",
+                nodeno = 22052,
+            ),
+            BusStation(
+                citycode = 23,
+                gpslati = 37.555732,
+                gpslong = 126.938536,
+                nodeid = "ICB113000417",
+                nodenm = "신촌오거리.2호선신촌역",
+                nodeno = 22014,
+            ),
+            BusStation(
+                citycode = 23,
+                gpslati = 37.556621,
+                gpslong = 126.944551,
+                nodeid = "ICB113000418",
+                nodenm = "이대역",
+                nodeno = 23036,
+            ),
+            BusStation(
+                citycode = 23,
+                gpslati = 37.555551,
+                gpslong = 126.935581,
+                nodeid = "ICB113000420",
+                nodenm = "신촌오거리.현대백화점",
+                nodeno = 23034,
+            ),
+            BusStation(
+                citycode = 23,
+                gpslati = 37.540240,
+                gpslong = 126.946609,
+                nodeid = "ICB1130000092",
+                nodenm = "마포역",
+                nodeno = 14002,
+            ),
+            BusStation(
+                citycode = 23,
+                gpslati = 37.540888,
+                gpslong = 126.947862,
+                nodeid = "ICB1130000001",
+                nodenm = "마포역",
+                nodeno = 14001,
+            ),
+        )
+
+        val jsonResult = (defaultResponse).distinctBy { it.nodeid }.sortedBy { it.nodeid }
+
+        println("${LocalDateTime.now()} safe busstation call / $lati / $long")
+
+        return jsonResult.map { busStation ->
+            GpsCoordinates(
+                busStation.nodenm,
+                busStation.gpslati,
+                busStation.gpslong
+            )
+        }
+    }
+
 
     @GetMapping("/near-threat")
     fun searchTerrorless(

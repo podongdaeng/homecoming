@@ -31,30 +31,49 @@ class BasicController(
         val center =
             Response.parseJsonResponse(getBusStationInfo.searchNearStationByGps(lati, long)).response.body.items.item
                 ?: emptyList()
-        val up = Response.parseJsonResponse(
-            getBusStationInfo.searchNearStationByGps(
-                lati + 0.01,
-                long
-            )
-        ).response.body.items.item ?: emptyList()
-        val down = Response.parseJsonResponse(
-            getBusStationInfo.searchNearStationByGps(
-                lati - 0.01,
-                long
-            )
-        ).response.body.items.item ?: emptyList()
-        val left = Response.parseJsonResponse(
-            getBusStationInfo.searchNearStationByGps(
-                lati,
-                long - 0.01
-            )
-        ).response.body.items.item ?: emptyList()
-        val right = Response.parseJsonResponse(
-            getBusStationInfo.searchNearStationByGps(
-                lati,
-                long + 0.01
-            )
-        ).response.body.items.item ?: emptyList()
+        val up = try {
+            Response.parseJsonResponse(
+                getBusStationInfo.searchNearStationByGps(
+                    lati + 0.01,
+                    long
+                )
+            ).response.body.items.item ?: emptyList()
+        } catch (e: Exception) {
+            return emptyList()
+        }
+
+        val down = try {
+            Response.parseJsonResponse(
+                getBusStationInfo.searchNearStationByGps(
+                    lati - 0.01,
+                    long
+                )
+            ).response.body.items.item ?: emptyList()
+        } catch (e: Exception) {
+            return emptyList()
+        }
+
+        val left = try {
+            Response.parseJsonResponse(
+                getBusStationInfo.searchNearStationByGps(
+                    lati,
+                    long - 0.01
+                )
+            ).response.body.items.item ?: emptyList()
+        } catch (e: Exception) {
+            return emptyList()
+        }
+
+        val right = try {
+            Response.parseJsonResponse(
+                getBusStationInfo.searchNearStationByGps(
+                    lati,
+                    long + 0.01
+                )
+            ).response.body.items.item ?: emptyList()
+        } catch (e: Exception) {
+            return emptyList()
+        }
 
         val defaultResponse = listOf(
             BusStation(
@@ -99,7 +118,7 @@ class BasicController(
             ),
         )
 
-        val jsonResult = (defaultResponse + center + up + down + left + right).distinctBy { it.nodeid }
+        val jsonResult = (defaultResponse + center + up + down + left + right).distinctBy { it.nodeid }.sortedBy { it.nodeid }
 
         return jsonResult.map { busStation ->
             GpsCoordinates(

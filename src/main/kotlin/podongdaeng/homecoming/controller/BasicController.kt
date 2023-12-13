@@ -22,7 +22,7 @@ class BasicController(
     private val terrorlessCrawlingService: TerrorlessCrawlingService
 ) {
     final val mod_lat = -0.0004
-    val mod_lng = 0.0037
+    final val mod_lng = 0.0037
     val defaultResponse = listOf(
         BusStation(
             citycode = 23,

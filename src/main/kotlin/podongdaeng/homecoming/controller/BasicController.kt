@@ -29,51 +29,54 @@ class BasicController(
     ): List<GpsCoordinates> {
         var lati = gpsLati.toDouble()
         var long = gpsLong.toDouble()
-        val center =
+        val center = try {
             Response.parseJsonResponse(getBusStationInfo.searchNearStationByGps(lati, long)).response.body.items.item
                 ?: emptyList()
+        } catch (e: Exception) {
+            emptyList()
+        }
         val up = try {
             Response.parseJsonResponse(
                 getBusStationInfo.searchNearStationByGps(
-                    lati + 0.01,
+                    lati + 0.005,
                     long
                 )
             ).response.body.items.item ?: emptyList()
         } catch (e: Exception) {
-            return emptyList()
+            emptyList()
         }
 
         val down = try {
             Response.parseJsonResponse(
                 getBusStationInfo.searchNearStationByGps(
-                    lati - 0.01,
+                    lati - 0.005,
                     long
                 )
             ).response.body.items.item ?: emptyList()
         } catch (e: Exception) {
-            return emptyList()
+            emptyList()
         }
 
         val left = try {
             Response.parseJsonResponse(
                 getBusStationInfo.searchNearStationByGps(
                     lati,
-                    long - 0.01
+                    long - 0.005
                 )
             ).response.body.items.item ?: emptyList()
         } catch (e: Exception) {
-            return emptyList()
+            emptyList()
         }
 
         val right = try {
             Response.parseJsonResponse(
                 getBusStationInfo.searchNearStationByGps(
                     lati,
-                    long + 0.01
+                    long + 0.005
                 )
             ).response.body.items.item ?: emptyList()
         } catch (e: Exception) {
-            return emptyList()
+            emptyList()
         }
 
         val defaultResponse = listOf(
@@ -133,9 +136,73 @@ class BasicController(
                 nodenm = "마포역",
                 nodeno = 14001,
             ),
+            BusStation(
+                citycode = 23,
+                gpslati = 37.549004800001065,
+                gpslong = 126.93553635393401,
+                nodeid = "SAN0000000001",
+                nodenm = "광성중고등학교",
+                nodeno = 1,
+            ),
+            BusStation(
+                citycode = 23,
+                gpslati = 37.54935570000011,
+                gpslong = 126.93447885393773,
+                nodeid = "SAN0000000002",
+                nodenm = "광성중고등학교",
+                nodeno = 2,
+            ),
+            BusStation(
+                citycode = 23,
+                gpslati = 37.551104857795245,
+                gpslong = 126.9372803608776,
+                nodeid = "SAN0000000003",
+                nodenm = "서강대학교",
+                nodeno = 3,
+            ),
+            BusStation(
+                citycode = 23,
+                gpslati = 37.55184849999907,
+                gpslong = 126.93315655393482,
+                nodeid = "SAN0000000004",
+                nodenm = "서강대학교",
+                nodeno = 4,
+            ),
+            BusStation(
+                citycode = 23,
+                gpslati = 37.55060430000117,
+                gpslong = 126.93979505393725,
+                nodeid = "SAN0000000005",
+                nodenm = "서강대학교후문",
+                nodeno = 5,
+            ),
+            BusStation(
+                citycode = 23,
+                gpslati = 37.54878039999946,
+                gpslong = 126.93830535393755,
+                nodeid = "SAN0000000006",
+                nodenm = "마포자이2차아파트.대흥역",
+                nodeno = 6,
+            ),
+            BusStation(
+                citycode = 23,
+                gpslati = 37.54819899999983,
+                gpslong = 126.93817775393869,
+                nodeid = "SAN0000000007",
+                nodenm = "대흥역사거리",
+                nodeno = 7,
+            ),
+            BusStation(
+                citycode = 23,
+                gpslati = 37.54812400000029,
+                gpslong = 126.93685475393436,
+                nodeid = "SAN0000000008",
+                nodenm = "대흥역",
+                nodeno = 8,
+            ),
         )
 
-        val jsonResult = (defaultResponse + center + up + down + left + right).distinctBy { it.nodeid }.sortedBy { it.nodeid }
+        val jsonResult = (defaultResponse + center + up + down + left + right).distinctBy { it.nodeno }.sortedBy { it.nodeno }
 
         println("${LocalDateTime.now()} BusStation call final json: ")
         println(jsonResult.joinToString(separator = "\n"))

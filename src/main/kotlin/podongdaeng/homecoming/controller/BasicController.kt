@@ -21,6 +21,128 @@ class BasicController(
     private val getBusStationInfo: GetBusStationInfo,
     private val terrorlessCrawlingService: TerrorlessCrawlingService
 ) {
+    val defaultResponse = listOf(
+        BusStation(
+            citycode = 23,
+            gpslati = 37.556008,
+            gpslong = 126.939948,
+            nodeid = "ICB113000419",
+            nodenm = "신촌오거리.2호선신촌역",
+            nodeno = 23035,
+        ),
+        BusStation(
+            citycode = 23,
+            gpslati = 37.556198,
+            gpslong = 126.939844,
+            nodeid = "ICB112900226",
+            nodenm = "신촌역2호선",
+            nodeno = 22052,
+        ),
+        BusStation(
+            citycode = 23,
+            gpslati = 37.555732,
+            gpslong = 126.938536,
+            nodeid = "ICB113000417",
+            nodenm = "신촌오거리.2호선신촌역",
+            nodeno = 22014,
+        ),
+        BusStation(
+            citycode = 23,
+            gpslati = 37.556621,
+            gpslong = 126.944551,
+            nodeid = "ICB113000418",
+            nodenm = "이대역",
+            nodeno = 23036,
+        ),
+        BusStation(
+            citycode = 23,
+            gpslati = 37.555551,
+            gpslong = 126.935581,
+            nodeid = "ICB113000420",
+            nodenm = "신촌오거리.현대백화점",
+            nodeno = 23034,
+        ),
+        BusStation(
+            citycode = 23,
+            gpslati = 37.540240,
+            gpslong = 126.946609,
+            nodeid = "ICB1130000092",
+            nodenm = "마포역",
+            nodeno = 14002,
+        ),
+        BusStation(
+            citycode = 23,
+            gpslati = 37.540888,
+            gpslong = 126.947862,
+            nodeid = "ICB1130000001",
+            nodenm = "마포역",
+            nodeno = 14001,
+        ),
+        BusStation(
+            citycode = 23,
+            gpslati = 37.549004800001065,
+            gpslong = 126.93553635393401,
+            nodeid = "SAN0000000001",
+            nodenm = "광성중고등학교",
+            nodeno = 1,
+        ),
+        BusStation(
+            citycode = 23,
+            gpslati = 37.54935570000011,
+            gpslong = 126.93447885393773,
+            nodeid = "SAN0000000002",
+            nodenm = "광성중고등학교",
+            nodeno = 2,
+        ),
+        BusStation(
+            citycode = 23,
+            gpslati = 37.551104857795245,
+            gpslong = 126.9372803608776,
+            nodeid = "SAN0000000003",
+            nodenm = "서강대학교",
+            nodeno = 3,
+        ),
+        BusStation(
+            citycode = 23,
+            gpslati = 37.55184849999907,
+            gpslong = 126.93315655393482,
+            nodeid = "SAN0000000004",
+            nodenm = "서강대학교",
+            nodeno = 4,
+        ),
+        BusStation(
+            citycode = 23,
+            gpslati = 37.55060430000117,
+            gpslong = 126.93979505393725,
+            nodeid = "SAN0000000005",
+            nodenm = "서강대학교후문",
+            nodeno = 5,
+        ),
+        BusStation(
+            citycode = 23,
+            gpslati = 37.54878039999946,
+            gpslong = 126.93830535393755,
+            nodeid = "SAN0000000006",
+            nodenm = "마포자이2차아파트.대흥역",
+            nodeno = 6,
+        ),
+        BusStation(
+            citycode = 23,
+            gpslati = 37.54819899999983,
+            gpslong = 126.93817775393869,
+            nodeid = "SAN0000000007",
+            nodenm = "대흥역사거리",
+            nodeno = 7,
+        ),
+        BusStation(
+            citycode = 23,
+            gpslati = 37.54812400000029,
+            gpslong = 126.93685475393436,
+            nodeid = "SAN0000000008",
+            nodenm = "대흥역",
+            nodeno = 8,
+        ),
+    )
 
     @GetMapping("/near-station")
     fun parseBusInfo(
@@ -79,129 +201,6 @@ class BasicController(
             emptyList()
         }
 
-        val defaultResponse = listOf(
-            BusStation(
-                citycode = 23,
-                gpslati = 37.556008,
-                gpslong = 126.939948,
-                nodeid = "ICB113000419",
-                nodenm = "신촌오거리.2호선신촌역",
-                nodeno = 23035,
-            ),
-            BusStation(
-                citycode = 23,
-                gpslati = 37.556198,
-                gpslong = 126.939844,
-                nodeid = "ICB112900226",
-                nodenm = "신촌역2호선",
-                nodeno = 22052,
-            ),
-            BusStation(
-                citycode = 23,
-                gpslati = 37.555732,
-                gpslong = 126.938536,
-                nodeid = "ICB113000417",
-                nodenm = "신촌오거리.2호선신촌역",
-                nodeno = 22014,
-            ),
-            BusStation(
-                citycode = 23,
-                gpslati = 37.556621,
-                gpslong = 126.944551,
-                nodeid = "ICB113000418",
-                nodenm = "이대역",
-                nodeno = 23036,
-            ),
-            BusStation(
-                citycode = 23,
-                gpslati = 37.555551,
-                gpslong = 126.935581,
-                nodeid = "ICB113000420",
-                nodenm = "신촌오거리.현대백화점",
-                nodeno = 23034,
-            ),
-            BusStation(
-                citycode = 23,
-                gpslati = 37.540240,
-                gpslong = 126.946609,
-                nodeid = "ICB1130000092",
-                nodenm = "마포역",
-                nodeno = 14002,
-            ),
-            BusStation(
-                citycode = 23,
-                gpslati = 37.540888,
-                gpslong = 126.947862,
-                nodeid = "ICB1130000001",
-                nodenm = "마포역",
-                nodeno = 14001,
-            ),
-            BusStation(
-                citycode = 23,
-                gpslati = 37.549004800001065,
-                gpslong = 126.93553635393401,
-                nodeid = "SAN0000000001",
-                nodenm = "광성중고등학교",
-                nodeno = 1,
-            ),
-            BusStation(
-                citycode = 23,
-                gpslati = 37.54935570000011,
-                gpslong = 126.93447885393773,
-                nodeid = "SAN0000000002",
-                nodenm = "광성중고등학교",
-                nodeno = 2,
-            ),
-            BusStation(
-                citycode = 23,
-                gpslati = 37.551104857795245,
-                gpslong = 126.9372803608776,
-                nodeid = "SAN0000000003",
-                nodenm = "서강대학교",
-                nodeno = 3,
-            ),
-            BusStation(
-                citycode = 23,
-                gpslati = 37.55184849999907,
-                gpslong = 126.93315655393482,
-                nodeid = "SAN0000000004",
-                nodenm = "서강대학교",
-                nodeno = 4,
-            ),
-            BusStation(
-                citycode = 23,
-                gpslati = 37.55060430000117,
-                gpslong = 126.93979505393725,
-                nodeid = "SAN0000000005",
-                nodenm = "서강대학교후문",
-                nodeno = 5,
-            ),
-            BusStation(
-                citycode = 23,
-                gpslati = 37.54878039999946,
-                gpslong = 126.93830535393755,
-                nodeid = "SAN0000000006",
-                nodenm = "마포자이2차아파트.대흥역",
-                nodeno = 6,
-            ),
-            BusStation(
-                citycode = 23,
-                gpslati = 37.54819899999983,
-                gpslong = 126.93817775393869,
-                nodeid = "SAN0000000007",
-                nodenm = "대흥역사거리",
-                nodeno = 7,
-            ),
-            BusStation(
-                citycode = 23,
-                gpslati = 37.54812400000029,
-                gpslong = 126.93685475393436,
-                nodeid = "SAN0000000008",
-                nodenm = "대흥역",
-                nodeno = 8,
-            ),
-        )
-
         val jsonResult = (defaultResponse + center + up + down + left + right).distinctBy { it.nodeno }.sortedBy { it.nodeno }
 
         println("${LocalDateTime.now()} BusStation call final json: ")
@@ -223,65 +222,6 @@ class BasicController(
     ): List<GpsCoordinates> {
         var lati = gpsLati.toDouble()
         var long = gpsLong.toDouble()
-
-        val defaultResponse = listOf(
-            BusStation(
-                citycode = 23,
-                gpslati = 37.556008,
-                gpslong = 126.939948,
-                nodeid = "ICB113000419",
-                nodenm = "신촌오거리.2호선신촌역",
-                nodeno = 23035,
-            ),
-            BusStation(
-                citycode = 23,
-                gpslati = 37.556198,
-                gpslong = 126.939844,
-                nodeid = "ICB112900226",
-                nodenm = "신촌역2호선",
-                nodeno = 22052,
-            ),
-            BusStation(
-                citycode = 23,
-                gpslati = 37.555732,
-                gpslong = 126.938536,
-                nodeid = "ICB113000417",
-                nodenm = "신촌오거리.2호선신촌역",
-                nodeno = 22014,
-            ),
-            BusStation(
-                citycode = 23,
-                gpslati = 37.556621,
-                gpslong = 126.944551,
-                nodeid = "ICB113000418",
-                nodenm = "이대역",
-                nodeno = 23036,
-            ),
-            BusStation(
-                citycode = 23,
-                gpslati = 37.555551,
-                gpslong = 126.935581,
-                nodeid = "ICB113000420",
-                nodenm = "신촌오거리.현대백화점",
-                nodeno = 23034,
-            ),
-            BusStation(
-                citycode = 23,
-                gpslati = 37.540240,
-                gpslong = 126.946609,
-                nodeid = "ICB1130000092",
-                nodenm = "마포역",
-                nodeno = 14002,
-            ),
-            BusStation(
-                citycode = 23,
-                gpslati = 37.540888,
-                gpslong = 126.947862,
-                nodeid = "ICB1130000001",
-                nodenm = "마포역",
-                nodeno = 14001,
-            ),
-        )
 
         val jsonResult = (defaultResponse).distinctBy { it.nodeid }.sortedBy { it.nodeid }
 
